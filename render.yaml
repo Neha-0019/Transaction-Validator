@@ -2,7 +2,7 @@ services:
   # 1. Python Flask Backend Service
   - type: web
     name: transaction-validator-backend
-    env: python
+    runtime: python
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn backend.app:app
     envVars:
@@ -12,11 +12,12 @@ services:
         value: 3.10.12
 
   # 2. React Static Frontend Site
-  - type: static
+  - type: web
     name: transaction-validator-frontend
-    env: static
+    runtime: static
     buildCommand: cd frontend && npm install --legacy-peer-deps && npm run build
-    publishPath: frontend/dist
+    staticPublishPath: frontend/dist
     envVars:
       - key: VITE_BACKEND_URL
         value: https://transaction-validator-backend.onrender.com # Replace with your deployed backend URL after first deployment
+
