@@ -1,0 +1,26 @@
+order_id,order_date,customer_name,country,phone_number,product_name,quantity,payment_mode,transaction_amount
+TXN1001,18-06-2026,Aarav Sharma,India,9876543210,MacBook Pro,1,UPI,1500.00
+TXN1002,2026-06-18,Tan Min,Singapore,81234567,iPhone 15,2,Card,2000.00
+TXN1003,18/06/2026,John Doe,USA,2025550143,iPad Air,5,Net Banking,2500.00
+TXN1004,18-06-2026,Farhan Halim,Malaysia,123456789,Leather Wallet,3,Cash,90.00
+TXN1005,18-06-2026,Sarah Connor,USA,+1 (202) 555-0199,Noise-Cancelling Headphones,1,Wallet,299.99
+TXN1006,18-06-2026,Rahul Verma,India,+91 99887 76655,Mechanical Keyboard,2,Bank Transfer,150.00
+,18-06-2026,No ID Person,India,9876543210,Laptop,1,UPI,1000.00
+TXN1007,,No Date Person,Singapore,81234567,Smartphone,1,Card,500.00
+TXN1008,18-06-2026,,USA,2025550143,Tablet,1,Cash,300.00
+TXN1009,18-06-2026,No Country Person,,2025550143,Tablet,1,Cash,300.00
+TXN1010,18-06-2026,No Phone Person,India,,Tablet,1,Cash,300.00
+TXN1001,18-06-2026,Duplicate Aarav,India,9876543210,MacBook Pro,1,UPI,1500.00
+TXN1011,18-06-2026,Invalid India Phone,India,12345,Coffee Mug,1,UPI,15.00
+TXN1012,18-06-2026,Invalid SG Phone,Singapore,912345678,Desk Mat,1,Card,30.00
+TXN1013,18-06-2026,Invalid US Phone,USA,555-0143,Coffee Mug,1,Cash,12.00
+TXN1014,18-06-2026,Invalid MY Phone,Malaysia,91234,Desk Mat,1,UPI,25.00
+TXN1015,18-06-2026,Unsupported Country Phone,Germany,17612345678,Book,1,Card,20.00
+TXN1016,06-18-2026,Invalid Date Format 1,USA,2025550143,T-Shirt,2,Card,40.00
+TXN1017,2026/06/18,Invalid Date Format 2,Singapore,81234567,Water Bottle,1,Cash,15.00
+TXN1018,32-06-2026,Invalid Date Value,India,9876543210,Socks,3,UPI,10.00
+TXN1019,18-06-2026,Invalid Payment 1,India,9876543210,Book,1,PayPal,25.00
+TXN1020,18-06-2026,Invalid Payment 2,USA,2025550143,Book,1,Crypto,50.00
+TXN1021,18-06-2026,Negative Qty Person,India,9876543210,Pen Drive,-2,UPI,30.00
+TXN1022,18-06-2026,Negative Amt Person,Singapore,81234567,SSD Drive,1,Card,-120.00
+TXN1023,18-06-2026,Float Qty Person,Malaysia,123456789,Gaming Mouse,1.5,UPI,45.00
