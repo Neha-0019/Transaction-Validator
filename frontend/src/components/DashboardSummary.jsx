@@ -72,44 +72,38 @@ export default function DashboardSummary({ stats }) {
     {
       title: 'Total Records',
       value: total_records.toLocaleString(),
-      icon: <Database className="text-blue-500" size={20} />,
-      borderColor: 'border-blue-200',
-      bgColor: 'bg-blue-50/50'
+      icon: <Database className="text-slate-400" size={16} />,
+      borderClass: 'border-l-[3px] border-l-slate-400'
     },
     {
       title: 'Valid Records',
       value: valid_records.toLocaleString(),
-      icon: <CheckCircle className="text-emerald-500" size={20} />,
-      borderColor: 'border-emerald-200',
-      bgColor: 'bg-emerald-50/50'
+      icon: <CheckCircle className="text-emerald-500" size={16} />,
+      borderClass: 'border-l-[3px] border-l-emerald-500'
     },
     {
       title: 'Invalid Records',
       value: invalid_records.toLocaleString(),
-      icon: <AlertTriangle className="text-red-500" size={20} />,
-      borderColor: 'border-red-200',
-      bgColor: 'bg-red-50/50'
+      icon: <AlertTriangle className="text-red-500" size={16} />,
+      borderClass: 'border-l-[3px] border-l-red-500'
     },
     {
       title: 'Duplicate Records',
       value: duplicate_records.toLocaleString(),
-      icon: <FileWarning className="text-amber-500" size={20} />,
-      borderColor: 'border-amber-200',
-      bgColor: 'bg-amber-50/50'
+      icon: <FileWarning className="text-amber-500" size={16} />,
+      borderClass: 'border-l-[3px] border-l-amber-500'
     },
     {
       title: 'Countries Found',
       value: countries_found.length.toString(),
-      icon: <Globe className="text-purple-500" size={20} />,
-      borderColor: 'border-purple-200',
-      bgColor: 'bg-purple-50/50'
+      icon: <Globe className="text-purple-500" size={16} />,
+      borderClass: 'border-l-[3px] border-l-purple-500'
     },
     {
       title: 'Success Rate',
       value: `${success_rate}%`,
-      icon: <Percent className="text-teal-500" size={20} />,
-      borderColor: 'border-teal-200',
-      bgColor: 'bg-teal-50/50'
+      icon: <Percent className="text-[#0d9488]" size={16} />,
+      borderClass: 'border-l-[3px] border-l-teal-500'
     }
   ];
 
@@ -120,13 +114,13 @@ export default function DashboardSummary({ stats }) {
         {metrics.map((metric, idx) => (
           <div 
             key={idx} 
-            className={`rounded-md border p-4 flex flex-col justify-between bg-white shadow-sm hover:border-slate-300 transition-colors ${metric.borderColor} ${metric.bgColor}`}
+            className={`rounded-[4px] p-4 flex flex-col justify-between bg-white shadow-[0_1px_3px_rgba(0,0,0,0.08)] transition-all ${metric.borderClass}`}
           >
-            <div className="flex justify-between items-start mb-2">
-              <span className="text-xs font-semibold text-slate-500 tracking-tight">{metric.title}</span>
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-xs font-normal text-slate-500 font-sans">{metric.title}</span>
               {metric.icon}
             </div>
-            <span className="text-2xl font-bold text-slate-800 font-mono tracking-tight">
+            <span className="text-3xl font-semibold text-slate-800 font-sans tracking-tight">
               {metric.value}
             </span>
           </div>
@@ -137,7 +131,7 @@ export default function DashboardSummary({ stats }) {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* Valid vs Invalid Donut Chart */}
-        <div className="lg:col-span-4 rounded-md border border-slate-200 bg-white p-5 shadow-sm flex flex-col justify-between h-[340px]">
+        <div className="lg:col-span-4 rounded-[4px] border border-slate-200 bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.08)] flex flex-col justify-between h-[340px]">
           <div>
             <h3 className="text-sm font-semibold text-slate-800">Validation Split</h3>
             <p className="text-xs text-slate-400 mt-0.5">Valid vs rejected records ratio</p>
@@ -170,8 +164,8 @@ export default function DashboardSummary({ stats }) {
             )}
             {/* Center stat labels */}
             <div className="absolute flex flex-col items-center justify-center">
-              <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Success</span>
-              <span className="text-2xl font-bold text-slate-800 font-mono">{success_rate}%</span>
+              <span className="text-[10px] text-slate-400 font-medium tracking-normal">Success</span>
+              <span className="text-2xl font-bold text-slate-800 font-sans">{success_rate}%</span>
             </div>
           </div>
           <div className="flex justify-center space-x-6 text-xs border-t border-slate-100 pt-3">
@@ -187,7 +181,7 @@ export default function DashboardSummary({ stats }) {
         </div>
 
         {/* Country Distribution */}
-        <div className="lg:col-span-8 rounded-md border border-slate-200 bg-white p-5 shadow-sm flex flex-col justify-between h-[340px]">
+        <div className="lg:col-span-8 rounded-[4px] border border-slate-200 bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.08)] flex flex-col justify-between h-[340px]">
           <div>
             <h3 className="text-sm font-semibold text-slate-800">Country Distribution</h3>
             <p className="text-xs text-slate-400 mt-0.5">Valid records segment count by country</p>
@@ -207,7 +201,18 @@ export default function DashboardSummary({ stats }) {
                     contentStyle={{ background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '4px' }}
                     itemStyle={{ color: '#1e293b', fontSize: 12 }}
                   />
-                  <Bar dataKey="Transactions" fill="#2563eb" radius={[3, 3, 0, 0]} />
+                  <Bar dataKey="Transactions" radius={[2, 2, 0, 0]}>
+                    {countryChartData.map((entry, index) => {
+                      const maxVal = Math.max(...countryChartData.map(d => d.Transactions));
+                      const isTop = entry.Transactions === maxVal && maxVal > 0;
+                      return (
+                        <Cell 
+                          key={`cell-${index}`} 
+                          fill={isTop ? '#0d9488' : '#cbd5e1'} 
+                        />
+                      );
+                    })}
+                  </Bar>
                 </BarChart>
               </ResponsiveContainer>
             )}
@@ -216,7 +221,7 @@ export default function DashboardSummary({ stats }) {
 
         {/* Error breakdown (If any) */}
         {invalid_records > 0 && (
-          <div className="lg:col-span-12 rounded-md border border-slate-200 bg-white p-5 shadow-sm flex flex-col justify-between min-h-[260px]">
+          <div className="lg:col-span-12 rounded-[4px] border border-slate-200 bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.08)] flex flex-col justify-between min-h-[260px]">
             <div>
               <h3 className="text-sm font-semibold text-slate-800">Validation Error Analysis</h3>
               <p className="text-xs text-slate-400 mt-0.5">Occurrences breakdown of custom validation failures</p>

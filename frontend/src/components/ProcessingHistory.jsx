@@ -2,6 +2,27 @@ import React, { useState, useEffect } from 'react';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://127.0.0.1:5000';
 
+const getRelativeTime = (timestamp) => {
+  if (!timestamp) return '';
+  try {
+    // Parse YYYY-MM-DD HH:MM:SS format safely
+    const past = new Date(timestamp.replace(/-/g, '/'));
+    const now = new Date();
+    const diffMs = now - past;
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    
+    if (diffMins < 1) return 'just now';
+    if (diffMins < 60) return `${diffMins} min ago`;
+    if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    if (diffDays === 1) return 'yesterday';
+    return `${diffDays} days ago`;
+  } catch (e) {
+    return '';
+  }
+};
+
 const ProcessingHistory = () => {
   const [history, setHistory] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -114,37 +135,49 @@ const ProcessingHistory = () => {
                   <th className="py-3 px-6">Processed Time</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
-                {filteredHistory.map((item, index) => (
-                  <tr key={index} className="hover:bg-slate-50/50">
-                    <td className="py-3.5 px-6 font-medium text-slate-900 truncate max-w-xs" title={item.file_name}>
-                      {item.file_name}
-                    </td>
-                    <td className="py-3.5 px-6 font-mono text-slate-600">
-                      {item.records_count.toLocaleString()}
-                    </td>
-                    <td className="py-3.5 px-6 font-mono text-emerald-600">
-                      {item.valid_count.toLocaleString()}
-                    </td>
-                    <td className="py-3.5 px-6 font-mono text-rose-600">
-                      {item.invalid_count.toLocaleString()}
-                    </td>
-                    <td className="py-3.5 px-6">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold uppercase tracking-wider ${
-                        item.status === 'Success' 
-                          ? 'bg-emerald-50 text-emerald-800 border border-emerald-200/50' 
-                          : item.status === 'Processed'
-                          ? 'bg-blue-50 text-blue-800 border border-blue-200/50'
-                          : 'bg-rose-50 text-rose-800 border border-rose-200/50'
-                      }`}>
-                        {item.status}
-                      </span>
-                    </td>
-                    <td className="py-3.5 px-6 text-slate-500">
-                      {item.processed_time}
-                    </td>
-                  </tr>
-                ))}
+              <tbody className="divide-y divide-slate-100 text-sm text-slate-700 font-sans">
+                {filteredHistory.map((item, index) => {
+                  const getStatusBorderClass = (status) => {
+                    const s = (status || '').toLowerCase();
+                    if (s === 'success') return 'border-l-[3px] border-l-emerald-500 pl-[21px]';
+                    if (s === 'processed') return 'border-l-[3px] border-l-[#0d9488] pl-[21px]';
+                    return 'border-l-[3px] border-l-red-500 pl-[21px]'; // Failed
+                  };
+
+                  return (
+                    <tr key={index} className="hover:bg-slate-50/50">
+                      <td className={`py-3.5 pr-6 font-medium text-slate-900 truncate max-w-xs ${getStatusBorderClass(item.status)}`} title={item.file_name}>
+                        {item.file_name}
+                      </td>
+                      <td className="py-3.5 px-6 text-slate-600">
+                        {item.records_count.toLocaleString()}
+                      </td>
+                      <td className="py-3.5 px-6 text-emerald-600 font-medium">
+                        {item.valid_count.toLocaleString()}
+                      </td>
+                      <td className="py-3.5 px-6 text-rose-600 font-medium">
+                        {item.invalid_count.toLocaleString()}
+                      </td>
+                      <td className="py-3.5 px-6">
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-[4px] text-xs font-semibold uppercase tracking-wider ${
+                          item.status === 'Success' 
+                            ? 'bg-emerald-50 text-emerald-800 border border-emerald-200/50' 
+                            : item.status === 'Processed'
+                            ? 'bg-teal-50 text-teal-800 border border-teal-200/50'
+                            : 'bg-rose-50 text-rose-800 border border-rose-200/50'
+                        }`}>
+                          {item.status}
+                        </span>
+                      </td>
+                      <td className="py-3.5 px-6 text-slate-500">
+                        <span>{item.processed_time}</span>
+                        {getRelativeTime(item.processed_time) && (
+                          <span className="text-slate-400 ml-2 font-normal text-xs">{getRelativeTime(item.processed_time)}</span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

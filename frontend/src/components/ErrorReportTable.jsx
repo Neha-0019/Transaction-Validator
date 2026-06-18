@@ -1,4 +1,31 @@
 import React, { useState, useMemo } from 'react';
+import { Copy, Check } from 'lucide-react';
+
+const CopyButton = ({ err }) => {
+  const [copied, setCopied] = useState(false);
+  
+  const handleCopy = (e) => {
+    e.stopPropagation();
+    const text = `Row ${err.row_number} - ${err.field_name} (${err.error_type}): ${err.error_description}`;
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  
+  return (
+    <button
+      onClick={handleCopy}
+      className="text-slate-400 hover:text-[#0d9488] p-1.5 rounded-[4px] hover:bg-slate-50 border border-slate-200 bg-white opacity-0 group-hover:opacity-100 transition-all focus:outline-none focus:opacity-100 duration-150 inline-flex items-center justify-center shadow-sm w-7 h-7"
+      title="Copy raw error details"
+    >
+      {copied ? (
+        <Check size={13} className="text-emerald-600" />
+      ) : (
+        <Copy size={13} />
+      )}
+    </button>
+  );
+};
 
 const ErrorReportTable = ({ errorReport = [] }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -131,40 +158,51 @@ const ErrorReportTable = ({ errorReport = [] }) => {
                 <th className="py-3 px-4 w-48">Field Name</th>
                 <th className="py-3 px-4 w-44">Error Type</th>
                 <th className="py-3 px-4">Error Description</th>
+                <th className="py-3 px-4 w-12 text-right"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
-              {filteredErrors.map((err, index) => (
-                <tr 
-                  key={index}
-                  className="hover:bg-slate-50/70 transition-colors"
-                >
-                  <td className="py-3 px-4 font-mono text-xs text-slate-500">
-                    Row {err.row_number}
-                  </td>
-                  <td className="py-3 px-4 font-medium">
-                    <span className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-xs font-mono">
-                      {err.field_name}
-                    </span>
-                  </td>
-                  <td className="py-3 px-4">
-                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                      err.error_type === 'Missing Value' 
-                        ? 'bg-amber-50 text-amber-800 border border-amber-200/50' 
-                        : err.error_type === 'Duplicate Value'
-                        ? 'bg-purple-50 text-purple-800 border border-purple-200/50'
-                        : err.error_type === 'Range/Type Error'
-                        ? 'bg-rose-50 text-rose-800 border border-rose-200/50'
-                        : 'bg-red-50 text-red-800 border border-red-200/50'
-                    }`}>
-                      {err.error_type}
-                    </span>
-                  </td>
-                  <td className="py-3 px-4 text-slate-600 font-normal">
-                    {err.error_description}
-                  </td>
-                </tr>
-              ))}
+            <tbody className="divide-y divide-slate-100 text-sm text-slate-700 font-sans">
+              {filteredErrors.map((err, index) => {
+                const getBadgeStyles = (errorType) => {
+                  const type = errorType || '';
+                  if (type === 'Duplicate Value') {
+                    return 'bg-amber-50 text-amber-800 border border-amber-200/50';
+                  } else if (type === 'Missing Value') {
+                    return 'bg-slate-100 text-slate-700 border border-slate-200';
+                  } else if (type === 'Format Error') {
+                    return 'bg-red-50 text-red-800 border border-red-200/30';
+                  } else {
+                    return 'bg-orange-50 text-orange-800 border border-orange-200/40'; // Validation Error / other types
+                  }
+                };
+
+                return (
+                  <tr 
+                    key={index}
+                    className="hover:bg-slate-50/80 transition-colors group relative"
+                  >
+                    <td className="py-3 px-4 font-mono text-xs text-slate-500">
+                      Row {err.row_number}
+                    </td>
+                    <td className="py-3 px-4">
+                      <span className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded-[4px] text-xs font-mono">
+                        {err.field_name}
+                      </span>
+                    </td>
+                    <td className="py-3 px-4">
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-[4px] text-xs font-medium ${getBadgeStyles(err.error_type)}`}>
+                        {err.error_type}
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 text-slate-650 font-normal">
+                      {err.error_description}
+                    </td>
+                    <td className="py-3 px-4 text-right">
+                      <CopyButton err={err} />
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         )}

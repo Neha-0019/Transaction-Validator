@@ -136,7 +136,7 @@ const RulesConfig = () => {
           {hasChanges && (
             <button
               onClick={handleReset}
-              className="px-4 py-2 border border-slate-300 text-slate-700 bg-white rounded-md text-sm font-medium hover:bg-slate-50 transition-colors"
+              className="px-4 py-2 border border-slate-300 text-slate-700 bg-white rounded-[4px] text-sm font-medium hover:bg-slate-50 transition-colors"
             >
               Reset Changes
             </button>
@@ -144,9 +144,9 @@ const RulesConfig = () => {
           <button
             onClick={handleSave}
             disabled={!hasChanges || isSaving}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors focus:ring-2 focus:ring-blue-500 focus:outline-none ${
+            className={`px-4 py-2 rounded-[4px] text-sm font-medium transition-colors focus:ring-2 focus:ring-[#0d9488] focus:outline-none ${
               hasChanges 
-                ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-sm' 
+                ? 'bg-[#0d9488] hover:bg-[#0b7e73] text-white shadow-sm' 
                 : 'bg-slate-100 text-slate-400 cursor-not-allowed'
             }`}
           >
@@ -157,11 +157,11 @@ const RulesConfig = () => {
 
       {/* Message Alerts */}
       {message && (
-        <div className={`p-4 rounded-md text-sm border ${
+        <div className={`p-4 rounded-[4px] text-sm border ${
           message.type === 'success' 
             ? 'bg-emerald-50 text-emerald-800 border-emerald-200' 
             : 'bg-rose-50 text-rose-800 border-rose-200'
-        }`}>
+        } shadow-[0_1px_3px_rgba(0,0,0,0.08)]`}>
           <div className="flex">
             <svg className="w-5 h-5 mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               {message.type === 'success' ? (
@@ -177,7 +177,7 @@ const RulesConfig = () => {
 
       {/* Unsaved Changes Banner */}
       {hasChanges && (
-        <div className="p-3 bg-amber-50 text-amber-800 border border-amber-200 rounded-md text-sm flex items-center gap-2">
+        <div className="p-3 bg-amber-50 text-amber-800 border border-amber-200 rounded-[4px] text-sm flex items-center gap-2 shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
           <svg className="w-5 h-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
@@ -186,7 +186,7 @@ const RulesConfig = () => {
       )}
 
       {/* Rules Table */}
-      <div className="bg-white border border-slate-200 rounded-md shadow-sm overflow-hidden">
+      <div className="bg-white border border-slate-200 rounded-[4px] shadow-[0_1px_3px_rgba(0,0,0,0.08)] overflow-hidden">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wider">
@@ -213,7 +213,7 @@ const RulesConfig = () => {
                       value={rule.country}
                       onChange={(e) => handleCellChange(index, 'country', e.target.value)}
                       placeholder="e.g. India"
-                      className="w-full px-3 py-1.5 border border-slate-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-slate-800"
+                      className="w-full px-3 py-1.5 border border-slate-300 rounded-[4px] focus:outline-none focus:ring-1 focus:ring-[#0d9488] focus:border-[#0d9488] text-slate-800 font-sans"
                     />
                   </td>
                   
@@ -226,20 +226,20 @@ const RulesConfig = () => {
                       max={20}
                       onChange={(e) => handleCellChange(index, 'phone_length', e.target.value)}
                       placeholder="e.g. 10"
-                      className="w-full px-3 py-1.5 border border-slate-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-slate-800"
+                      className="w-full px-3 py-1.5 border border-slate-300 rounded-[4px] focus:outline-none focus:ring-1 focus:ring-[#0d9488] focus:border-[#0d9488] text-slate-800 font-sans"
                     />
                   </td>
                   
                   {/* Prefix */}
                   <td className="py-3 px-6">
-                    <div className="relative">
+                    <div className="relative font-sans">
                       <span className="absolute left-3 top-2 text-slate-400 font-medium">+</span>
                       <input
                         type="text"
                         value={rule.phone_prefix || ''}
                         onChange={(e) => handleCellChange(index, 'phone_prefix', e.target.value)}
                         placeholder="e.g. 91"
-                        className="w-full pl-6 pr-3 py-1.5 border border-slate-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-slate-800 font-mono"
+                        className="w-full pl-6 pr-3 py-1.5 border border-slate-300 rounded-[4px] focus:outline-none focus:ring-1 focus:ring-[#0d9488] focus:border-[#0d9488] text-slate-800 font-mono"
                       />
                     </div>
                   </td>
@@ -248,7 +248,7 @@ const RulesConfig = () => {
                   <td className="py-3 px-6 text-center">
                     <button
                       onClick={() => handleDeleteRow(index)}
-                      className="text-xs text-rose-600 hover:text-rose-800 font-medium hover:underline p-1"
+                      className="text-xs text-rose-600 hover:text-rose-800 font-medium hover:underline p-1 font-sans"
                     >
                       Delete
                     </button>
@@ -260,10 +260,10 @@ const RulesConfig = () => {
         </table>
         
         {/* Add Row Button Row */}
-        <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex justify-between items-center">
+        <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex justify-between items-center font-sans">
           <button
             onClick={handleAddRow}
-            className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-300 rounded-md text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 active:bg-slate-100 transition-colors shadow-sm"
+            className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-300 rounded-[4px] text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 active:bg-slate-100 transition-colors shadow-sm"
           >
             <svg className="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -278,7 +278,7 @@ const RulesConfig = () => {
       </div>
       
       {/* Help Card */}
-      <div className="bg-slate-50 border border-slate-200 rounded-md p-4 text-xs text-slate-600 space-y-2">
+      <div className="bg-slate-50 border border-slate-200 rounded-[4px] p-4 text-xs text-slate-600 space-y-2 shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
         <h4 className="font-semibold text-slate-700">How phone prefix stripping works:</h4>
         <ul className="list-disc pl-4 space-y-1">
           <li>The validator cleans phone inputs of space, bracket, and plus symbols (e.g. <span className="font-mono text-slate-800">+91 (98765) 43210</span> becomes <span className="font-mono text-slate-800">919876543210</span>).</li>
