@@ -3,6 +3,7 @@ services:
   - type: web
     name: transaction-validator-backend
     runtime: python
+    plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn backend.app:app
     envVars:
@@ -15,9 +16,11 @@ services:
   - type: web
     name: transaction-validator-frontend
     runtime: static
+    plan: free
     buildCommand: cd frontend && npm install --legacy-peer-deps && npm run build
     staticPublishPath: frontend/dist
     envVars:
       - key: VITE_BACKEND_URL
         value: https://transaction-validator-backend.onrender.com # Replace with your deployed backend URL after first deployment
+
 
