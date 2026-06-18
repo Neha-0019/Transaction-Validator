@@ -5,10 +5,8 @@ services:
     runtime: python
     plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn backend.app:app
+    startCommand: gunicorn --bind 0.0.0.0:$PORT backend.app:app
     envVars:
-      - key: PORT
-        value: 5000
       - key: PYTHON_VERSION
         value: 3.10.12
 
@@ -21,6 +19,7 @@ services:
     envVars:
       - key: VITE_BACKEND_URL
         value: https://transaction-validator-backend.onrender.com # Replace with your deployed backend URL after first deployment
+
 
 
 
