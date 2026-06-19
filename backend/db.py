@@ -57,14 +57,14 @@ def init_db():
     # 4. Seed default processing history if table is empty
     cursor.execute('SELECT COUNT(*) FROM processing_history')
     if cursor.fetchone()[0] == 0:
-        now = datetime.now()
+        now = datetime.utcnow()
         
-        # Helper to format time relative to now
+        # Helper to format time relative to now in UTC ISO format
         def get_past_time(hours_ago):
-            return (now - timedelta(hours=hours_ago)).strftime('%Y-%m-%d %H:%M:%S')
+            return (now - timedelta(hours=hours_ago)).strftime('%Y-%m-%dT%H:%M:%SZ')
             
         default_history = [
-            ("large_transactions1.csv", 11000, 10500, 500, "Processed", get_past_time(24)),
+            ("large_transactions1.csv", 11000, 10500, 500, "Processed", get_past_time(12)),
             ("sample_transactions_1.csv", 50, 48, 2, "Processed", get_past_time(4)),
             ("sample_transactions.csv", 25, 6, 19, "Processed", get_past_time(1.5))
         ]
@@ -123,7 +123,7 @@ def get_history():
 def add_history_entry(file_name, records_count, valid_count, invalid_count, status):
     conn = get_db_connection()
     cursor = conn.cursor()
-    processed_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    processed_time = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
     try:
         cursor.execute(
             'INSERT INTO processing_history (file_name, records_count, valid_count, invalid_count, status, processed_time) VALUES (?, ?, ?, ?, ?, ?)',

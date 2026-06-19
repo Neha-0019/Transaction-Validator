@@ -5,8 +5,12 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://127.0.0.1:5000';
 const getRelativeTime = (timestamp) => {
   if (!timestamp) return '';
   try {
-    // Parse YYYY-MM-DD HH:MM:SS format safely
-    const past = new Date(timestamp.replace(/-/g, '/'));
+    // Parse timestamp safely, converting legacy space-separated format to ISO 8601 UTC
+    let dateStr = timestamp;
+    if (timestamp.includes(' ') && !timestamp.includes('T')) {
+      dateStr = timestamp.replace(' ', 'T') + 'Z';
+    }
+    const past = new Date(dateStr);
     const now = new Date();
     const diffMs = now - past;
     const diffMins = Math.floor(diffMs / (1000 * 60));
