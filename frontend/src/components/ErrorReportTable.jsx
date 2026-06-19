@@ -85,7 +85,7 @@ const ErrorReportTable = ({ errorReport = [], jobId, backendUrl }) => {
             {jobId && (
               <button
                 onClick={handleDownloadLog}
-                className="w-fit inline-flex items-center space-x-1.5 px-2.5 py-1 text-[11px] font-semibold text-[#0d9488] bg-teal-50 border border-teal-200 hover:bg-teal-100 rounded-[4px] shadow-sm transition-colors focus:outline-none h-fit"
+                className="w-fit inline-flex items-center space-x-1.5 px-2.5 py-1 text-[11px] font-semibold text-white bg-[#0d9488] hover:bg-[#0b7e73] rounded-[4px] shadow-sm transition-colors focus:outline-none h-fit"
                 title="Download detailed error log as CSV"
               >
                 <Download size={11} className="w-3 h-3 flex-shrink-0" />
