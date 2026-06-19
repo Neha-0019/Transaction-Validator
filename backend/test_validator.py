@@ -97,19 +97,19 @@ class TestValidator(unittest.TestCase):
         # Invalid records analysis:
         # O001 (Valid)
         # O002 (Valid)
-        # O003 (Duplicate Order ID) - both O003 rows will be flagged as duplicates
+        # O003 (Duplicate Order ID) - first occurrence kept, second flagged as duplicate
         # O005 (Negative Quantity: -5)
         # O006 (Missing Customer Name)
         # O007 (Invalid Phone Number "999" for Singapore, Invalid Payment Mode "InvalidMode")
         # O008 (Unsupported Country for Phone: UK, Negative Transaction Amount: -50.00)
-        # Therefore, only O001 and O002 are fully valid!
-        # Total valid should be 2.
-        self.assertEqual(stats["valid_records"], 2)
-        self.assertEqual(stats["invalid_records"], 6)
+        # Therefore, O001, O002 and first O003 are fully valid!
+        # Total valid should be 3.
+        self.assertEqual(stats["valid_records"], 3)
+        self.assertEqual(stats["invalid_records"], 5)
         
         # Check duplicate records count
-        # Row O003 is duplicated (two rows). duplicates count = 2.
-        self.assertEqual(stats["duplicate_records"], 2)
+        # Row O003 is duplicated (two rows). First is valid, second is duplicate. duplicate_records count = 1.
+        self.assertEqual(stats["duplicate_records"], 1)
         
         # Verify output files exist
         job_id = result["job_id"]

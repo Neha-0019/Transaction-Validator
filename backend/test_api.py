@@ -59,9 +59,9 @@ class TestAPIIntegration(unittest.TestCase):
         # From sample file: 5 valid, 1 missing id, 1 missing date, 1 missing customer, 
         # 1 missing country, 1 missing phone, 1 duplicate, 5 invalid phones, 3 invalid dates, 
         # 2 invalid payments, 3 negative qty/amt/float qty.
-        # Cleaned records: 5 (both rows of TXN1001 duplicate are flagged invalid)
-        self.assertEqual(stats["valid_records"], 5)
-        self.assertEqual(stats["invalid_records"], 20)
+        # Cleaned records: 6 (first row of TXN1001 duplicate is kept, subsequent is duplicate)
+        self.assertEqual(stats["valid_records"], 6)
+        self.assertEqual(stats["invalid_records"], 19)
         
         # Test download cleaned CSV
         job_id = data["job_id"]

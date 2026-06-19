@@ -135,10 +135,10 @@ def process_transaction_csv(file_path, output_dir):
             "error": f"CSV is missing required columns: {', '.join(missing_columns)}"
         }
     
-    # Mark duplicates in order_id
+    # Mark duplicates in order_id (keep first occurrence as valid, subsequent as duplicate)
     order_ids_clean = df['order_id'].fillna('').str.strip()
     has_order_id = order_ids_clean != ''
-    duplicates = df.duplicated(subset=['order_id'], keep=False) & has_order_id
+    duplicates = df.duplicated(subset=['order_id'], keep='first') & has_order_id
     
     row_errors = [[] for _ in range(total_records)]
     error_report = []
@@ -360,9 +360,17 @@ def process_transaction_csv(file_path, output_dir):
     # Save cleaned and invalid files
     cleaned_path = os.path.join(job_dir, "cleaned_transactions.csv")
     invalid_path = os.path.join(job_dir, "invalid_transactions.csv")
+    error_log_path = os.path.join(job_dir, "validation_error_log.csv")
     
     cleaned_df.to_csv(cleaned_path, index=False)
     invalid_df.to_csv(invalid_path, index=False)
+    
+    # Save validation error log CSV
+    if error_report:
+        error_log_df = pd.DataFrame(error_report)
+    else:
+        error_log_df = pd.DataFrame(columns=["row_number", "field_name", "error_type", "error_description"])
+    error_log_df.to_csv(error_log_path, index=False)
     
     # File Splitting Feature (> 10,000 rows)
     chunk_files = []

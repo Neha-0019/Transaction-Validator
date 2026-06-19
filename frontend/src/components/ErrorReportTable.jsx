@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Copy, Check } from 'lucide-react';
+import { Copy, Check, Download } from 'lucide-react';
 
 const CopyButton = ({ err }) => {
   const [copied, setCopied] = useState(false);
@@ -27,10 +27,16 @@ const CopyButton = ({ err }) => {
   );
 };
 
-const ErrorReportTable = ({ errorReport = [] }) => {
+const ErrorReportTable = ({ errorReport = [], jobId, backendUrl }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [fieldFilter, setFieldFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
+
+  const handleDownloadLog = () => {
+    if (jobId && backendUrl) {
+      window.open(`${backendUrl}/api/download/${jobId}/error_log`, '_blank');
+    }
+  };
 
   // Extract unique field names and error types for filter dropdowns
   const uniqueFields = useMemo(() => {
@@ -69,11 +75,23 @@ const ErrorReportTable = ({ errorReport = [] }) => {
       {/* Header and Controls */}
       <div className="p-4 border-b border-slate-200 bg-slate-50 rounded-t-md">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h3 className="text-base font-semibold text-slate-800">Validation Error Log</h3>
-            <p className="text-xs text-slate-500 mt-1">
-              Showing {filteredErrors.length} of {errorReport.length} logged failures
-            </p>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-3 gap-2">
+            <div>
+              <h3 className="text-base font-semibold text-slate-800">Validation Error Log</h3>
+              <p className="text-xs text-slate-500 mt-1">
+                Showing {filteredErrors.length} of {errorReport.length} logged failures
+              </p>
+            </div>
+            {jobId && (
+              <button
+                onClick={handleDownloadLog}
+                className="w-fit inline-flex items-center space-x-1.5 px-2.5 py-1 text-[11px] font-semibold text-[#0d9488] bg-teal-50 border border-teal-200 hover:bg-teal-100 rounded-[4px] shadow-sm transition-colors focus:outline-none h-fit"
+                title="Download detailed error log as CSV"
+              >
+                <Download size={11} className="w-3 h-3 flex-shrink-0" />
+                <span>Download Error Log (CSV)</span>
+              </button>
+            )}
           </div>
           
           <div className="flex flex-wrap items-center gap-3">

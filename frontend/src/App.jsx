@@ -308,7 +308,11 @@ export default function App() {
 
                   {/* Failure Report Table */}
                   {results.error_report && results.error_report.length > 0 && (
-                    <ErrorReportTable errorReport={results.error_report} />
+                    <ErrorReportTable 
+                      errorReport={results.error_report} 
+                      jobId={results.job_id}
+                      backendUrl={BACKEND_URL}
+                    />
                   )}
 
                   {/* Clean File Success banner */}

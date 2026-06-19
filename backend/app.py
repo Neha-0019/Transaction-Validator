@@ -129,6 +129,9 @@ def download_file(job_id, file_type):
     elif file_type == 'chunks':
         filename = 'chunks.zip'
         download_name = 'transaction_chunks.zip'
+    elif file_type == 'error_log':
+        filename = 'validation_error_log.csv'
+        download_name = 'validation_error_log.csv'
     else:
         return jsonify({"error": "Invalid file type requested"}), 400
         
