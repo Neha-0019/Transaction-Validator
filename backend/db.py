@@ -64,9 +64,9 @@ def init_db():
             return (now - timedelta(hours=hours_ago)).strftime('%Y-%m-%d %H:%M:%S')
             
         default_history = [
-            ("sample_transactions.csv", 25, 6, 19, "Processed", get_past_time(1.5)),
+            ("large_transactions1.csv", 11000, 10500, 500, "Processed", get_past_time(24)),
             ("sample_transactions_1.csv", 50, 48, 2, "Processed", get_past_time(4)),
-            ("large_transactions1.csv", 11000, 10500, 500, "Processed", get_past_time(24))
+            ("sample_transactions.csv", 25, 6, 19, "Processed", get_past_time(1.5))
         ]
         cursor.executemany(
             'INSERT INTO processing_history (file_name, records_count, valid_count, invalid_count, status, processed_time) VALUES (?, ?, ?, ?, ?, ?)',
