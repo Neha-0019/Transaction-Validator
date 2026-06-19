@@ -2,7 +2,7 @@
 
 import os
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timedelta
 
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'database.db')
 
@@ -51,6 +51,26 @@ def init_db():
         cursor.executemany(
             'INSERT INTO country_rules (country, phone_length, phone_prefix) VALUES (?, ?, ?)',
             default_rules
+        )
+        conn.commit()
+        
+    # 4. Seed default processing history if table is empty
+    cursor.execute('SELECT COUNT(*) FROM processing_history')
+    if cursor.fetchone()[0] == 0:
+        now = datetime.now()
+        
+        # Helper to format time relative to now
+        def get_past_time(hours_ago):
+            return (now - timedelta(hours=hours_ago)).strftime('%Y-%m-%d %H:%M:%S')
+            
+        default_history = [
+            ("sample_transactions.csv", 25, 6, 19, "Processed", get_past_time(1.5)),
+            ("sample_transactions_1.csv", 50, 48, 2, "Processed", get_past_time(4)),
+            ("large_transactions1.csv", 11000, 10500, 500, "Processed", get_past_time(24))
+        ]
+        cursor.executemany(
+            'INSERT INTO processing_history (file_name, records_count, valid_count, invalid_count, status, processed_time) VALUES (?, ?, ?, ?, ?, ?)',
+            default_history
         )
         conn.commit()
         
